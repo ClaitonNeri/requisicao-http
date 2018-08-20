@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,7 +91,22 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            txtResultado.setText(result);
+
+            String objetoValor = null;
+            String objetoValorReal = null;
+
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                objetoValor = jsonObject.getString("BRL");
+
+                JSONObject jsonObjectReal = new JSONObject(objetoValor);
+                objetoValorReal = jsonObjectReal.getString("symbol");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            txtResultado.setText(objetoValorReal);
         }
     }
 }
